@@ -1,31 +1,34 @@
-use std::collections::HashSet;
-use std::collections::HashMap;
+// The code below is a stub. Just enough to satisfy the compiler.
+// In order to pass the tests you can add-to or change any of this code.
 
-pub fn anagrams_for<'a>(word: &str, possible_anagrams: &'a [&str]) -> HashSet<&'a str> {
-     // Only add words to the hashset which are equal in length to the input word
-    let word_l = word.to_lowercase();
+#[derive(Debug)]
+pub struct Duration{ years: f64,}
 
-    // Map input word to hashmap
-    let mut char_map = HashMap::new();
-    word_l.chars().for_each(|c| *char_map.entry(c).or_insert(0) += 1);
-    
-    // Defining a macro (?) which looks through the chars in the given input and will return True
-    // if there are no excess chars, or false if there is more chars in the input.
-    let check_char = |s: &str| -> bool {
-        let mut char_map = char_map.clone();
-        s.chars().any(|c| {
-            let v = char_map.entry(c).or_insert(0);
-            *v -= 1;
-            *v < 0
-        })
-    };
-    
-    // Loop through the anagrams list, only keep the items which aren't equal to the input word and
-    // the number of chars match.
-    possible_anagrams.iter().filter(|x| {
-        x.len() == word.len() && {
-            let x_lower = x.to_lowercase();
-            x_lower != word_l && !check_char(&x_lower)
+
+impl From<u64> for Duration {
+    fn from(s: u64) -> Self {
+        Duration {
+            years:  s as f64 / 31557600 as f64,
         }
-    }).cloned().collect()
+    }
 }
+
+pub trait Planet {
+    fn period() -> f64;
+    fn years_during(d: &Duration) -> f64 { d.years / Self::period() }
+}
+
+macro_rules! impl_planet {
+    ($n:ident, $p:expr) => {
+        pub struct $n; impl Planet for $n { fn period() -> f64 { $p } }
+    }
+}
+
+impl_planet!(Mercury, 0.2408467);
+impl_planet!(Venus, 0.61519726);
+impl_planet!(Earth, 1.0);
+impl_planet!(Mars, 1.8808158);
+impl_planet!(Jupiter, 11.862615);
+impl_planet!(Saturn, 29.447498);
+impl_planet!(Uranus, 84.016846);
+impl_planet!(Neptune, 164.79132);
