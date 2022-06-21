@@ -1,1 +1,1 @@
-# exorcism-tasks
+# exercism-tasks
