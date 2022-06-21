@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "space-age"
-version = "1.2.0"
+name = "nth_prime"
+version = "2.1.0"

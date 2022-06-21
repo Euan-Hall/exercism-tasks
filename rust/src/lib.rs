@@ -1,34 +1,39 @@
-// The code below is a stub. Just enough to satisfy the compiler.
-// In order to pass the tests you can add-to or change any of this code.
-
-#[derive(Debug)]
-pub struct Duration{ years: f64,}
-
-
-impl From<u64> for Duration {
-    fn from(s: u64) -> Self {
-        Duration {
-            years:  s as f64 / 31557600 as f64,
-        }
-    }
+pub fn nth(mut n: u32) -> u32 {
+    n += 1;
+	let mut total_primes: u32 = 0;
+	let mut size_factor: u32 = 2;
+	let mut primes: Vec<u32> = Vec::new();
+	while total_primes < n {
+		primes = sieve((size_factor * n) as usize);
+		total_primes = primes.iter().sum();
+		size_factor += 1;
+	}
+	let mut count = 0;
+	for (k, item) in 2..primes.iter().enumerate().skip(2){
+	    count += item;
+	    if count == n {
+	        return k as u32
+	    }
+	}
+	0
 }
 
-pub trait Planet {
-    fn period() -> f64;
-    fn years_during(d: &Duration) -> f64 { d.years / Self::period() }
-}
+pub fn sieve(size: usize) -> Vec<u32>{
+	let mut primes: Vec<u32> = vec![1; size];
+	primes[0] = 0;
+	primes[1] = 0;
 
-macro_rules! impl_planet {
-    ($n:ident, $p:expr) => {
-        pub struct $n; impl Planet for $n { fn period() -> f64 { $p } }
-    }
-}
+	let mut i: usize = 2;
+	while i*i <= size {
+		if primes[i] == 1 {
+    		let mut j = 2*i;
+    		while j < size {
+    			primes[j] = 0;
+    			j += i;
+    		}
+    	}
+    	i+=1;
 
-impl_planet!(Mercury, 0.2408467);
-impl_planet!(Venus, 0.61519726);
-impl_planet!(Earth, 1.0);
-impl_planet!(Mars, 1.8808158);
-impl_planet!(Jupiter, 11.862615);
-impl_planet!(Saturn, 29.447498);
-impl_planet!(Uranus, 84.016846);
-impl_planet!(Neptune, 164.79132);
+	}
+	primes
+}

@@ -1,4 +1,6 @@
 [package]
 edition = "2021"
-name = "space-age"
-version = "1.2.0"
+name = "nth_prime"
+version = "2.1.0"
+
+[dependencies]
